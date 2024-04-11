@@ -1,20 +1,24 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { AuthScreen, TodoListScreen } from "../screens";
 
 const RootNavigator = () => {
   const RootStack = createNativeStackNavigator();
 
   return (
     <RootStack.Navigator>
-      <TabStack.Screen
+      <RootStack.Screen
         name="AuthScreen"
-        component={LoginScreen}
+        component={AuthScreen}
         options={{ headerShown: false }}
       />
-      <TabStack.Screen
+      <RootStack.Screen
         name="TodoListScreen"
-        component={DriverNavigator}
+        component={TodoListScreen}
         options={{ headerShown: true }}
       />
     </RootStack.Navigator>
-  )
-}
+  );
+};
+
+export default RootNavigator;
