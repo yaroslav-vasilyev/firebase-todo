@@ -15,7 +15,7 @@ const RootNavigator = () => {
       <RootStack.Screen
         name="TodoListScreen"
         component={TodoListScreen}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       />
     </RootStack.Navigator>
   );

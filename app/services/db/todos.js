@@ -5,11 +5,8 @@ import { FIREBASE_DB } from "../firebase/firebaseConfig";
 
 export const addTodoToDB = async (userID, todo) => {
   try {
-    // Путь к коллекции задач для конкретного пользователя (например, используя идентификатор пользователя)
-    const todosCollectionRef = firestore().collection(`users/${userID}/todos`);
+    const todosCollectionRef = addDoc(collection(FIREBASE_DB, 'todos'));
 
-    // Добавление новой задачи в коллекцию
-    await todosCollectionRef.add(todo);
 
     console.log("Todo added successfully!");
   } catch (error) {
