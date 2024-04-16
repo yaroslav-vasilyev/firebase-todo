@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
@@ -12,7 +12,11 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 
-import { addTodoToDB, removeTodoFromDB } from "../../services/db/todos";
+import {
+  addTodoToDB,
+  removeTodoFromDB,
+  updateTodoOrderInDB,
+} from "../../services/db/todos";
 import { FIREBASE_DB } from "../../services/firebase/firebaseConfig";
 import { screenWrapper } from "../../shared/globalStyles";
 
@@ -31,6 +35,7 @@ const TodoListScreen = () => {
     if (todo) {
       // new todo
       const newTodo = {
+        order: todos.length + 1,
         name: todo,
       };
 
@@ -56,16 +61,22 @@ const TodoListScreen = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    getDocs(collection(FIREBASE_DB, "users", userID, "todos"))
-      .then((querySnapshot) => {
-        const newData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setTodos(newData);
-      })
-      .finally(() => setLoading(false));
+    if (!todos.length > 0) {
+      setLoading(true);
+      const queryDB = query(
+        collection(FIREBASE_DB, "users", userID, "todos"),
+        orderBy("order"),
+      );
+      getDocs(queryDB)
+        .then((querySnapshot) => {
+          const newData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setTodos(newData);
+        })
+        .finally(() => setLoading(false));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,6 +111,7 @@ const TodoListScreen = () => {
           keyExtractor={(item) => item.id}
           onDragEnd={({ data }) => {
             setTodos(data);
+            updateTodoOrderInDB(userID, data);
           }}
           renderItem={({ item, drag, isActive }) => (
             <TouchableOpacity
@@ -118,7 +130,7 @@ const TodoListScreen = () => {
                 },
                 {
                   backgroundColor: isActive
-                    ? "red"
+                    ? MD3Colors.neutralVariant70
                     : MD3Colors.neutralVariant90,
                 },
               ]}

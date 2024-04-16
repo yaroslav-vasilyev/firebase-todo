@@ -14,17 +14,16 @@ const isValidEmail = (email) => {
 const AuthScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const [isAtuthorizedUser, setIsAuthorizedUser] = useState(
+  const [isAuthorizedUser, setIsAuthorizedUser] = useState(
     !!route.params?.isAuthorized,
   );
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleRegister = async () => {
     try {
-      if (isAtuthorizedUser) {
+      if (isAuthorizedUser) {
         await authUser(email, password);
       } else {
         if (!isValidEmail(email)) {
@@ -33,7 +32,7 @@ const AuthScreen = () => {
         }
         await registerUser(email, password);
       }
-      navigation.replace("TodoListScreen", { name, email });
+      navigation.replace("TodoListScreen", { email });
     } catch (error) {
       console.log(error.message);
       setError(error.message);
@@ -54,18 +53,13 @@ const AuthScreen = () => {
         Todo app
       </Text>
       <Icon source="" />
-      {!isAtuthorizedUser && (
-        <>
-          <TextInput label="Name" value={name} onChangeText={setName} />
-        </>
-      )}
       <TextInput label="Email" value={email} onChangeText={setEmail} />
       <TextInput label="Password" value={password} onChangeText={setPassword} />
-      {error && <Text>{error}</Text>}
+      {!!error && <Text>{error}</Text>}
       <Button mode="contained" onPress={handleRegister}>
-        {isAtuthorizedUser ? "Login" : "Sign Up"}
+        {isAuthorizedUser ? "Login" : "Sign Up"}
       </Button>
-      {isAtuthorizedUser ? (
+      {isAuthorizedUser ? (
         <Button
           style={{ alignSelf: "center" }}
           onPress={() => setIsAuthorizedUser(false)}
