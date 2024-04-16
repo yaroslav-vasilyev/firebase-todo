@@ -33,7 +33,7 @@ const AuthScreen = () => {
         }
         await registerUser(email, password);
       }
-      navigation.replace("TodoListScreen", { name });
+      navigation.replace("TodoListScreen", { name, email });
     } catch (error) {
       console.log(error.message);
       setError(error.message);
@@ -65,12 +65,19 @@ const AuthScreen = () => {
       <Button mode="contained" onPress={handleRegister}>
         {isAtuthorizedUser ? "Login" : "Sign Up"}
       </Button>
-      {isAtuthorizedUser && (
+      {isAtuthorizedUser ? (
         <Button
           style={{ alignSelf: "center" }}
           onPress={() => setIsAuthorizedUser(false)}
         >
           Want to create a new account? Register!
+        </Button>
+      ) : (
+        <Button
+          style={{ alignSelf: "center" }}
+          onPress={() => setIsAuthorizedUser(true)}
+        >
+          Already have account? Login!
         </Button>
       )}
     </View>

@@ -1,15 +1,20 @@
-import firestore from "@react-native-firebase/firestore";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 
 import { FIREBASE_DB } from "../firebase/firebaseConfig";
 
 export const addTodoToDB = async (userID, todo) => {
   try {
-    const todosCollectionRef = addDoc(collection(FIREBASE_DB, 'todos'));
+    const docRef = await addDoc(
+      collection(FIREBASE_DB, "users", userID, "todos"),
+      todo,
+    );
 
-
-    console.log("Todo added successfully!");
+    return docRef.id;
   } catch (error) {
     console.error("Error adding todo:", error);
   }
+};
+
+export const removeTodoFromDB = async (userID, todoID) => {
+  deleteDoc(doc(FIREBASE_DB, "users", userID, "cart", todoID));
 };
