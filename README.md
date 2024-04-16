@@ -16,7 +16,8 @@ Link: https://expo.dev/accounts/yaroslavvas/projects/TodoApp/builds/2efbf919-465
 # DEMO
 ## Workflow:
 
-![ScreenRecording2024-04-16at12 35 42-ezgif com-video-to-gif-converter](https://github.com/yaroslav-vasilyev/firebase-todo/assets/116715761/b176cec2-a526-4c14-aa7e-c340467e0acf)
+![ScreenRecording2024-04-16at12 35 42-ezgif com-video-to-gif-converter (1)](https://github.com/yaroslav-vasilyev/firebase-todo/assets/116715761/9bd01d17-4edf-40aa-bc04-706c14a2db19)
+
 
 ## Firebase:
 
